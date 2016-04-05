@@ -34,7 +34,7 @@ socket.on('chatMessage',function(from,msg){
 
 $(document).ready(function(){
 	var name = makeid();		
-	//alert(name);	
+	alert(name);	
 	$('#user').val(name);
 	socket.emit('chatMessage','System','<b>' + name + '</b> has joined discussion.');
 });
