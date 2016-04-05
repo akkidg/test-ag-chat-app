@@ -3,7 +3,7 @@ var socket = io();
 function submitfunction(){
 	var user = $('#user').val();
 	var msg = $('#m').val();
-	
+	alert("I am an alert box!");
 	if(msg != ''){
 		socket.emit('chatMessage',user,msg);
 	}
