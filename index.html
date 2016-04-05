@@ -8,14 +8,9 @@
     <script src="chat.js"></script>
   </head>
   <body>
-  <script>
-function myFunction() {
-    alert("I am an alert box!");
-}
-</script>
     <ul id="messages"></ul>
     <span id="notifyUser"></span>
-    <form id="form" action="" onsubmit="return myFunction();" >
+    <form id="form" action="" onsubmit="return submitfunction();" >
       <input type="hidden" id="user" value="" /><input type="text" id="m" autocomplete="off" onkeyup="notifyTyping();" placeholder="Type yor message here.." /><input type="submit" id="button" value="Send"/>
     </form>	 
   </body>
