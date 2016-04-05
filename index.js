@@ -6,7 +6,7 @@ var port = process.env.PORT || 5000
 
 app.get('/',function(req,res){
 	var express = require('express');
-	app.use(express.static(path.join(__dirname)));
+	app.use(express.static(__dirname + "/"));
 	res.sendFile('index.html');
 });
 	
