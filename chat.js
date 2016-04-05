@@ -3,7 +3,7 @@ var socket = io('http://test-ag-chat-app.herokuapp.com/');
 function submitfunction(){
 	var user = $('#user').val();
 	var msg = $('#m').val();
-	alert("I am an alert box!");
+	//alert("I am an alert box!");
 	if(msg != ''){
 		socket.emit('chatMessage',user,msg);
 	}
@@ -34,7 +34,7 @@ socket.on('chatMessage',function(from,msg){
 
 $(document).ready(function(){
 	var name = makeid();		
-	alert(name);	
+	//alert(name);	
 	$('#user').val(name);
 	socket.emit('chatMessage','System','<b>' + name + '</b> has joined discussion.');
 });
