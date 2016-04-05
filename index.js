@@ -5,7 +5,7 @@ var path = require('path');
 var port = process.env.PORT || 5000
 
 
-app.get('/',function(req,res)
+app.get('/',function(req,res){
 	var express = require('express');
 	app.use(express.static(path.join(__dirname + "/public")));	
 	res.sendFile(path.join(__dirname,'index.html'));
