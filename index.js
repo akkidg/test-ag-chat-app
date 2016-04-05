@@ -6,8 +6,8 @@ var port = process.env.PORT || 5000
 
 app.get('/',function(req,res){
 	var express = require('express');
-	app.use(express.static(__dirname + "/"));
-	res.sendFile('index.html');
+	app.use(express.static(path.join(__dirname)));
+	res.sendFile(path.join(__dirname,'../chatapp','index.html'));
 });
 	
 io.on('connection',function(socket){
