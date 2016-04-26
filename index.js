@@ -21,7 +21,7 @@ io.on('connection',function(socket){
 	};	
 	Users.push(user);
 	socket.username = userName;		
-	io.emit('systemMessage','<b>' + socket.username + '</b>',' has joined discussion.');	
+	io.emit('systemMessage','<b>' + userName + '</b>',' has joined discussion.');	
 	});
 	
 	socket.on('chatMessage',function(from,msg){
