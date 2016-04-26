@@ -19,6 +19,7 @@ function notifyTyping(){
 
 socket.on('notifyUser',function(user){
 	var me = $('#userName').val();
+	alert('me'+me);
 	if(user != me){
 		$('#notifyUser').text(user + ' is typing...');
 	}
@@ -27,6 +28,7 @@ socket.on('notifyUser',function(user){
 
 socket.on('chatMessage',function(from,msg){
 	var me = $('#userName').val();
+	alert('me'+me);
 	var color = (from == me) ? 'green' : '#009afd';
 	var from = (from == me)	? 'Me' : from;
 	$('#messages').append('<li><b style="color:' + color + '">' + from + '</b>:' + msg + '</li>');	
