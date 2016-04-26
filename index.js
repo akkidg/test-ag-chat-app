@@ -41,10 +41,10 @@ io.on('connection',function(socket){
 		var name;
 		for(var i=0;i<Users.length;i++){
 			var user = Users[i];
-			if(user['id']==from){
+			if(user['id']==user){
 				name = user['name'];
 			}else{
-				name = from;
+				name = user;
 			}
 		}	
 		io.emit('notifyUser',name);
