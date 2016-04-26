@@ -34,15 +34,6 @@ io.on('connection',function(socket){
 	
 });
 
-function getName(var userId){
-	for(var i=0;i<Users.length;i++){
-			var user = Users[i];
-			if(user['id'] == user)
-				name = user['name'];
-		}
-	return name;	
-}
-
 http.listen(port,function(){
 	console.log('listening on ' + port);	
 });
