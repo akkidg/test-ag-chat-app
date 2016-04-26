@@ -25,11 +25,29 @@ io.on('connection',function(socket){
 	});
 	
 	socket.on('chatMessage',function(from,msg){
-		io.emit('chatMessage',socket.username,msg);		
+		var name;
+		for(var i=0;i<Users.length;i++){
+			var user = Users[i];
+			if(user['id']==from){
+				name = user['name'];
+			}else{
+				name = from;
+			}
+		}
+		io.emit('chatMessage',name,msg);		
 	});
 	
-	socket.on('notifyUser',function(user){			
-		io.emit('notifyUser',socket.username);
+	socket.on('notifyUser',function(user){	
+		var name;
+		for(var i=0;i<Users.length;i++){
+			var user = Users[i];
+			if(user['id']==from){
+				name = user['name'];
+			}else{
+				name = from;
+			}
+		}	
+		io.emit('notifyUser',name);
 	});	
 	
 });

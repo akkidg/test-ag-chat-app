@@ -19,7 +19,7 @@ function notifyTyping(){
 
 socket.on('notifyUser',function(user){
 	var me = $('#userName').val();
-	alert('me'+me);
+	alert('me'+ me);
 	if(user != me){
 		$('#notifyUser').text(user + ' is typing...');
 	}
