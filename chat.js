@@ -26,7 +26,7 @@ socket.on('notifyUser',function(user){
 });
 
 socket.on('chatMessage',function(from,msg){
-	var me = $('#userId').val();
+	var me = $('#userName').val();
 	var color = (from == me) ? 'green' : '#009afd';
 	var from = (from == me)	? 'Me' : from;
 	$('#messages').append('<li><b style="color:' + color + '">' + from + '</b>:' + msg + '</li>');	

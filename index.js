@@ -25,14 +25,23 @@ io.on('connection',function(socket){
 	});
 	
 	socket.on('chatMessage',function(from,msg){
-		io.emit('chatMessage',from,msg);		
+		io.emit('chatMessage',socket.username,msg);		
 	});
 	
-	socket.on('notifyUser',function(user){
-		io.emit('notifyUser',user);
+	socket.on('notifyUser',function(user){			
+		io.emit('notifyUser',socket.username);
 	});	
 	
 });
+
+function getName(var userId){
+	for(var i=0;i<Users.length;i++){
+			var user = Users[i];
+			if(user['id'] == user)
+				name = user['name'];
+		}
+	return name;	
+}
 
 http.listen(port,function(){
 	console.log('listening on ' + port);	
