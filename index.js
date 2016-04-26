@@ -28,8 +28,8 @@ io.on('connection',function(socket){
 		var name;
 		for(var i=0;i<Users.length;i++){
 			var user = Users[i];
-			if(user['id']==from){
-				name = user['name'];
+			if(user["id"] == from){
+				name = user["name"];
 			}else{
 				name = from;
 			}
@@ -41,8 +41,8 @@ io.on('connection',function(socket){
 		var name;
 		for(var i=0;i<Users.length;i++){
 			var user = Users[i];
-			if(user['id']==user){
-				name = user['name'];
+			if(user["id"]==user){
+				name = user["name"];
 			}else{
 				name = user;
 			}
