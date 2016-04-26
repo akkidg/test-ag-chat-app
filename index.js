@@ -4,6 +4,7 @@ var io = require('socket.io')(http);
 var path = require('path');
 var port = process.env.PORT || 5000
 
+var Users = [];
 
 app.get('/',function(req,res){
 	var express = require('express');
@@ -13,12 +14,24 @@ app.get('/',function(req,res){
 	
 io.on('connection',function(socket){
 	
+	socket.on('addUser',function(id,userName){
+	var user = {
+		"id":id,
+		"name":userName
+	};	
+	Users.push(user);
+	socket.username = userName;		
+	io.emit('systemMessage','<b>' + userName + '</b>',' has joined discussion.');	
+	});
+	
 	socket.on('chatMessage',function(from,msg){
 		io.emit('chatMessage',from,msg);		
 	});
+	
 	socket.on('notifyUser',function(user){
 		io.emit('notifyUser',user);
 	});	
+	
 });
 
 http.listen(port,function(){

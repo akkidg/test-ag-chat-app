@@ -1,7 +1,7 @@
 var socket = io('http://test-ag-chat-app.herokuapp.com/');
 
 function submitfunction(){
-	var user = $('#user').val();
+	var user = $('#userId').val();
 	var msg = $('#m').val();
 	//alert("I am an alert box!");
 	if(msg != ''){
@@ -12,13 +12,13 @@ function submitfunction(){
 }
 
 function notifyTyping(){
-	var user = $('#user').val();
+	var user = $('#userId').val();
 	//alert('typing user'+user);
 	socket.emit('notifyUser',user);
 }
 
 socket.on('notifyUser',function(user){
-	var me = $('#user').val();
+	var me = $('#userId').val();
 	if(user != me){
 		$('#notifyUser').text(user + ' is typing...');
 	}
@@ -26,17 +26,24 @@ socket.on('notifyUser',function(user){
 });
 
 socket.on('chatMessage',function(from,msg){
-	var me = $('#user').val();
+	var me = $('#userId').val();
 	var color = (from == me) ? 'green' : '#009afd';
 	var from = (from == me)	? 'Me' : from;
 	$('#messages').append('<li><b style="color:' + color + '">' + from + '</b>:' + msg + '</li>');	
 });
 
+socket.on('systemMessage',function(from,msg){
+	$('#messages').append('<li><b style="color:#009afd">' + from + '</b>' + msg + '</li>');	
+});
+
 $(document).ready(function(){
-	var name = makeid();		
-	//alert(name);	
-	$('#user').val(name);
-	socket.emit('chatMessage','System','<b>' + name + '</b> has joined discussion.');
+	var id = makeid();		
+	//alert(name);
+	var name = prompt("What's Your Name?");
+	$('#userId').val(id);
+	$('#userName').val(name);	
+	socket.emit('addUser',id,name);	
+	//socket.emit('chatMessage','System','<b>' + name + '</b> has joined discussion.');
 });
 
 // create new User Id
