@@ -17,9 +17,9 @@ function notifyTyping(){
 	socket.emit('typing',userName);
 }
 
-socket.on('systemMessage',function(jsonText){
-	alert('systemMessage '+jsonText.toString());
+socket.on('systemMessage',function(jsonText){	
 	var obj = JSON.parse(jsonText);	
+	alert('systemMessage '+obj.message);
 	$('#messages').append('<li>' + obj.message + ' </li>');
 });
 
