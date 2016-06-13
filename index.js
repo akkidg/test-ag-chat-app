@@ -1,9 +1,9 @@
-
 var app = require('express')();
-var server = require('http').createServer(app);
-var io = require('socket.io')(server);
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
 var path = require('path');
 var port = process.env.PORT || 5000
+
 
 var numUsers = 0;
 
@@ -53,6 +53,6 @@ io.on('connection',function(socket){
 	
 });
 
-server.listen(port,function(){
+http.listen(port,function(){
 	console.log('listening on ' + port);	
 });
