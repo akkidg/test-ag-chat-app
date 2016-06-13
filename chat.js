@@ -1,7 +1,7 @@
 var socket = io('http://test-ag-chat-app.herokuapp.com/');
 
 function submitfunction(){
-	var user = $('#userName').val();
+	var user = $('#userId').val();
 	var msg = $('#m').val();
 	//alert("I am an alert box!");
 	if(msg != ''){
@@ -12,28 +12,13 @@ function submitfunction(){
 }
 
 function notifyTyping(){
-	var user = $('#userName').val();
+	var user = $('#userId').val();
 	//alert('typing user'+user);
-	socket.emit('typing',userName);
+	socket.emit('notifyUser',user);
 }
 
-socket.on('login',function(numUsers){
-	var obj = JSON.parse(numUsers);
-	$('#messages').append('<li>' + obj.numUsers + ' participants.</li>');
-});
-
-socket.on('addUser',function(jsonText){
-	var obj = JSON.parse(jsonText);
-	var user = obj.userName;
-	var numUsers  = obj.numUsers;
-	$('#messages').append('<li><b style="color:#009afd">' + user + '</b> joined room.</li>');	
-	$('#messages').append('<li>' + numUsers + '</b> participants.</li>');
-});
-
-socket.on('typing',function(jsonText){
+socket.on('notifyUser',function(user){
 	var me = $('#userName').val();
-	var obj = JSON.parse(jsonText);
-	var user = obj.userName
 	//alert('me'+ me);
 	if(user != me){
 		$('#notifyUser').text(user + ' is typing...');
@@ -41,24 +26,16 @@ socket.on('typing',function(jsonText){
 	setTimeout(function(){$('#notifyUser').text('');},10000);
 });
 
-socket.on('chatMessage',function(jsonText){
+socket.on('chatMessage',function(from,msg){
 	var me = $('#userName').val();
-	var obj = JSON.parse(jsonText);
-	var from = obj.userName;
-	var msg = obj.message;
-
 	//alert('me'+me);
 	var color = (from == me) ? 'green' : '#009afd';
 	var from = (from == me)	? 'Me' : from;
 	$('#messages').append('<li><b style="color:' + color + '">' + from + '</b>:' + msg + '</li>');	
 });
 
-socket.on('userLeft',function(jsonText){
-	var obj = JSON.parse(jsonText);
-	var user = obj.userName;
-	var numUsers  = obj.numUsers;
-	$('#messages').append('<li><b style="color:#009afd">' + user + '</b> left room.</li>');	
-	$('#messages').append('<li>' + numUsers + '</b> participants.</li>');	
+socket.on('systemMessage',function(from,msg){
+	$('#messages').append('<li><b style="color:#009afd">' + from + '</b>' + msg + '</li>');	
 });
 
 $(document).ready(function(){
