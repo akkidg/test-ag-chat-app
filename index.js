@@ -4,8 +4,7 @@ var io = require('socket.io')(http);
 var path = require('path');
 var port = process.env.PORT || 5000
 
-
-var numUsers = 0;
+var Users = [];
 
 app.get('/',function(req,res){
 	var express = require('express');
@@ -14,41 +13,51 @@ app.get('/',function(req,res){
 });
 	
 io.on('connection',function(socket){
-
-	var addedUser = false;	
 	
-	socket.on('addUser',function(userName,id){
-		if(addedUser) return;
-
-		socket.username = userName;
-		++numUsers;		
-		addedUser = true;
-		socket.emit('login',{
-			numUsers:numUsers
-		});
-		socket.broadcast.emit('addUser',{username:socket.username,numUsers:numUsers});	
+	socket.on('addUser',function(id,userName){
+	var user = {
+		"id":id,
+		"name":userName
+	};	
+	Users.push(user);
+	socket.username = userName;		
+	io.emit('systemMessage','<b>' + userName + '</b>',' has joined discussion.');	
 	});
 	
-	socket.on('chatMessage',function(msg){		
-		socket.broadcast.emit('chatMessage',{userName: socket.username,messge: msg});			
+	socket.on('chatMessage',function(from,msg){
+		var name;
+		for(var i=0;i<Users.length;i++){
+			var user = Users[i];
+			if(user["id"] == from){
+				name = user["name"];
+			}else{
+				name = from;
+			}
+		}
+		//io.emit('chatMessage',name,msg);	 send msg to all including sender
+		socket.broadcast.emit('chatMessage',name,msg);
+			
 	});
 	
-	socket.on('typing',function(){			
-		socket.broadcast.emit('typing',{userName:socket.username});
-	});	
-
-	socket.on('stopTyping',function(){			
-		socket.broadcast.emit('stopTyping',{userName:socket.username});
+	socket.on('notifyUser',function(user){	
+		var name;
+		for(var i=0;i<Users.length;i++){
+			var user = Users[i];
+			if(user["id"]==user){
+				name = user["name"];
+			}else{
+				name = user;
+			}
+		}	
+		socket.broadcast.emit('notifyUser',name);
 	});	
 	
-	socket.on('directMessage'function(){
+	socket.on('directMessage'function(from,to,msg){
 		
 	});
 	
 	socket.on('disconnect',function(){
-		if(addedUser)
-			--numUsers;	
-		socket.broadcast.emit('userLeft',{username:socket.username,numUsers: numUsers});
+		console.log('user disconnected');		
 	});
 	
 });
