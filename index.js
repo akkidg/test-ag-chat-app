@@ -41,14 +41,7 @@ io.on('connection',function(socket){
 	
 	socket.on('notifyUser',function(user){	
 		var name;
-		for(var i=0;i<Users.length;i++){
-			var user = Users[i];
-			if(user["id"]==user){
-				name = user["name"];
-			}else{
-				name = user;
-			}
-		}	
+		
 		socket.broadcast.emit('notifyUser',name);
 	});	
 	
