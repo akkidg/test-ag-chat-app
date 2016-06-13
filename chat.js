@@ -17,6 +17,11 @@ function notifyTyping(){
 	socket.emit('typing',userName);
 }
 
+socket.on('systemMessage',function(jsonText){
+	var obj = JSON.parse(jsonText);	
+	$('#messages').append('<li>' + obj.message + ' </li>');
+});
+
 socket.on('login',function(numUsers){
 	var obj = JSON.parse(numUsers);
 	$('#messages').append('<li>' + obj.numUsers + ' participants.</li>');

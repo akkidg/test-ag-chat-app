@@ -26,7 +26,8 @@ io.on('connection',function(socket){
 		socket.emit('login',{
 			numUsers:numUsers
 		});
-		socket.broadcast.emit('addUser',{username:socket.username,numUsers:numUsers});	
+		socket.broadcast.emit('addUser',{username:socket.username,numUsers:numUsers});
+		io.emit('systemMessage',{message:'<b>' + userName + '</b>',' welcome.'});	
 	});
 	
 	socket.on('chatMessage',function(msg){		
