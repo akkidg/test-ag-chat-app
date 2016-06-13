@@ -45,7 +45,7 @@ io.on('connection',function(socket){
 		socket.broadcast.emit('notifyUser',name);
 	});	
 	
-	socket.on('directMessage'function(from,to,msg){
+	socket.on('directMessage',function(from,to,msg){
 		
 	});
 	
