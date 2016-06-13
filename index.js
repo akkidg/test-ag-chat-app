@@ -41,7 +41,7 @@ io.on('connection',function(socket){
 		socket.broadcast.emit('stopTyping',{userName:socket.username});
 	});	
 	
-	socket.on('directMessage'function(from,to,msg){
+	socket.on('directMessage'function(){
 		
 	});
 	
