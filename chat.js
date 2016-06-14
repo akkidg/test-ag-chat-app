@@ -1,6 +1,7 @@
 var socket = io('http://test-ag-chat-app.herokuapp.com/');
 
 function submitfunction(){
+	var user = $('#userName').val();
 	var msg = $('#m').val();
 	//alert("I am an alert box!");
 	if(msg != ''){
@@ -69,8 +70,6 @@ $(document).ready(function(){
 	$('#userId').val(id);
 	$('#userName').val(name);	
 
-	$('#messages').append('<li> Welcome ' + name + ' </li>');
-	socket.emit('addUser',name,id);
 	//socket.emit('chatMessage','System','<b>' + name + '</b> has joined discussion.');
 });
 
