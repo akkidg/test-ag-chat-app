@@ -5,7 +5,7 @@ function submitfunction(){
 	var msg = $('#m').val();
 	//alert("I am an alert box!");
 	if(msg != ''){
-		socket.emit('chatMessage',msg);
+		socket.emit('chatMessage',user,msg);
 	}
 	$('#m').val('').focus();
 	return false;
@@ -14,7 +14,7 @@ function submitfunction(){
 function notifyTyping(){
 	var user = $('#userName').val();
 	//alert('typing user'+user);
-	socket.emit('typing');
+	socket.emit('typing',username);
 }
 
 socket.on('systemMessage',function(jsonText){	
@@ -36,16 +36,19 @@ socket.on('addUser',function(jsonText){
 });
 
 socket.on('typing',function(jsonText){
-	var obj = JSON.parse(JSON.stringify(jsonText));
-	var user = obj.username;
+	var me = $('#userName').val();
+	var obj = JSON.parse(jsonText);
+	var user = obj.userName;
 	//alert('me'+ me);
-	$('#notifyUser').text(user + ' is typing...');
+	if(user != me){
+		$('#notifyUser').text(user + ' is typing...');
+	}
 	setTimeout(function(){$('#notifyUser').text('');},10000);
 });
 
 socket.on('chatMessage',function(jsonText){
 	var me = $('#userName').val();
-	var obj = JSON.parse(JSON.stringifyjsonText));
+	var obj = JSON.parse(jsonText);
 	var from = obj.username;
 	var msg = obj.message;
 
@@ -70,6 +73,8 @@ $(document).ready(function(){
 	$('#userId').val(id);
 	$('#userName').val(name);	
 
+	$('#messages').append('<li> Welcome ' + name + ' </li>');
+	socket.emit('addUser',name,id);
 	//socket.emit('chatMessage','System','<b>' + name + '</b> has joined discussion.');
 });
 
