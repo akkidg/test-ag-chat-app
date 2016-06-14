@@ -29,6 +29,7 @@ socket.on('login',function(numUsers){
 });
 
 socket.on('addUser',function(jsonText){
+	alert("new user");
 	var obj = JSON.parse(JSON.stringify(jsonText));
 	var user = obj.username;
 	var numUsers  = obj.numUsers;
