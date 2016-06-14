@@ -38,7 +38,6 @@ socket.on('addUser',function(jsonText){
 socket.on('typing',function(jsonText){
 	var obj = JSON.parse(JSON.stringify(jsonText));
 	var user = obj.username;
-	alert(user+" typing");
 	$('#notifyUser').text(user + ' is typing...');
 	setTimeout(function(){$('#notifyUser').text('');},10000);
 });
