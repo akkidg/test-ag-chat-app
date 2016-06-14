@@ -14,16 +14,16 @@ function submitfunction(){
 function notifyTyping(){
 	var user = $('#userName').val();
 	//alert('typing user'+user);
-	socket.emit('typing',user);
+	socket.emit('typing',userName);
 }
 
 socket.on('systemMessage',function(jsonText){	
-	var obj = JSON.parse(JSON.stringify(jsonText));	
+	var obj = JSON.parse(jsonText);	
 	$('#messages').append('<li>' + obj.message + ' </li>');
 });
 
 socket.on('login',function(numUsers){
-	var obj = JSON.parse(JSON.stringify(numUsers));
+	var obj = JSON.parse(numUsers);
 	$('#messages').append('<li>' + obj.numUsers + ' participants.</li>');
 });
 
@@ -37,8 +37,8 @@ socket.on('addUser',function(jsonText){
 
 socket.on('typing',function(jsonText){
 	var me = $('#userName').val();
-	var obj = JSON.parse(JSON.stringifyjsonText));
-	var user = obj.username
+	var obj = JSON.parse(jsonText);
+	var user = obj.userName
 	//alert('me'+ me);
 	if(user != me){
 		$('#notifyUser').text(user + ' is typing...');
@@ -48,8 +48,8 @@ socket.on('typing',function(jsonText){
 
 socket.on('chatMessage',function(jsonText){
 	var me = $('#userName').val();
-	var obj = JSON.parse(JSON.stringify(jsonText));
-	var from = obj.username;
+	var obj = JSON.parse(jsonText);
+	var from = obj.userName;
 	var msg = obj.message;
 
 	//alert('me'+me);
@@ -59,8 +59,8 @@ socket.on('chatMessage',function(jsonText){
 });
 
 socket.on('userLeft',function(jsonText){
-	var obj = JSON.parse(JSON.stringifyjsonText));
-	var user = obj.username;
+	var obj = JSON.parse(jsonText);
+	var user = obj.userName;
 	var numUsers  = obj.numUsers;
 	$('#messages').append('<li><b style="color:#009afd">' + user + '</b> left room.</li>');	
 	$('#messages').append('<li>' + numUsers + '</b> participants.</li>');	
@@ -71,7 +71,8 @@ $(document).ready(function(){
 	//alert(name);
 	var name = prompt("What's Your Name?");
 	$('#userId').val(id);
-	$('#userName').val(name);			
+	$('#userName').val(name);	
+		
 	$('#messages').append('<li> Welcome ' + name + ' </li>');
 	socket.emit('addUser',name,id);
 	//socket.emit('chatMessage','System','<b>' + name + '</b> has joined discussion.');
