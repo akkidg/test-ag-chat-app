@@ -16,10 +16,10 @@ io.on('connection',function(socket){
 
 	var addedUser = false;	
 	
-	socket.on('addUser',function(userName,id){
+	socket.on('addUser',function(username,id){
 		if(addedUser) return;
 
-		socket.username = userName;
+		socket.username = username;
 		++numUsers;		
 		addedUser = true;
 		socket.emit('login',{
@@ -30,15 +30,15 @@ io.on('connection',function(socket){
 	});
 	
 	socket.on('chatMessage',function(msg){		
-		socket.broadcast.emit('chatMessage',{userName: socket.username,messge: msg});			
+		socket.broadcast.emit('chatMessage',{username: socket.username,message: msg});			
 	});
 	
 	socket.on('typing',function(){			
-		socket.broadcast.emit('typing',{userName:socket.username});
+		socket.broadcast.emit('typing',{username:socket.username});
 	});	
 
 	socket.on('stopTyping',function(){			
-		socket.broadcast.emit('stopTyping',{userName:socket.username});
+		socket.broadcast.emit('stopTyping',{username:socket.username});
 	});	
 	
 	socket.on('directMessage',function(){
