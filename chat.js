@@ -18,8 +18,7 @@ function notifyTyping(){
 }
 
 socket.on('systemMessage',function(jsonText){	
-	alert('systemMessage '+jsonText);
-	//var obj = JSON.parse(jsonText);	
+	var obj = JSON.parse(jsonText);	
 	$('#messages').append('<li>' + obj.message + ' </li>');
 });
 
@@ -29,7 +28,6 @@ socket.on('login',function(numUsers){
 });
 
 socket.on('addUser',function(jsonText){
-	alert("new user");
 	var obj = JSON.parse(JSON.stringify(jsonText));
 	var user = obj.username;
 	var numUsers  = obj.numUsers;
@@ -75,6 +73,7 @@ $(document).ready(function(){
 	$('#userId').val(id);
 	$('#userName').val(name);	
 	socket.emit('addUser',name,id);	
+	$('#messages').append('<li> Welcome ' + name + ' </li>');
 	//socket.emit('chatMessage','System','<b>' + name + '</b> has joined discussion.');
 });
 
