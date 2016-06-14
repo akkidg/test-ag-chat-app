@@ -4,7 +4,6 @@ function submitfunction(){
 	var msg = $('#m').val();
 	//alert("I am an alert box!");
 	if(msg != ''){
-		$('#messages').append('<li><b style="color:green">' + from + '</b>:' + msg + '</li>');
 		socket.emit('chatMessage',msg);
 	}
 	$('#m').val('').focus();
