@@ -4,7 +4,6 @@ var io = require('socket.io')(http);
 var path = require('path');
 var port = process.env.PORT || 5000
 
-
 var numUsers = 0;
 
 app.get('/',function(req,res){
@@ -27,7 +26,7 @@ io.on('connection',function(socket){
 			numUsers:numUsers
 		});
 		socket.broadcast.emit('addUser',{username:socket.username,numUsers:numUsers});
-		io.emit('systemMessage',{"message":'<b>' + userName + '</b> welcome.'});	
+		io.emit('systemMessage',{message:'<b>' + userName + '</b> welcome.'});	
 	});
 	
 	socket.on('chatMessage',function(msg){		
