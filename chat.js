@@ -14,7 +14,7 @@ function submitfunction(){
 function notifyTyping(){
 	var user = $('#userName').val();
 	//alert('typing user'+user);
-	socket.emit('typing',username);
+	socket.emit('typing');
 }
 
 socket.on('systemMessage',function(jsonText){	
@@ -36,19 +36,16 @@ socket.on('addUser',function(jsonText){
 });
 
 socket.on('typing',function(jsonText){
-	var me = $('#userName').val();
-	var obj = JSON.parse(jsonText);
-	var user = obj.username
+	var obj = JSON.parse(JSON.stringify(jsonText));
+	var user = obj.username;
 	//alert('me'+ me);
-	if(user != me){
-		$('#notifyUser').text(user + ' is typing...');
-	}
+	$('#notifyUser').text(user + ' is typing...');
 	setTimeout(function(){$('#notifyUser').text('');},10000);
 });
 
 socket.on('chatMessage',function(jsonText){
 	var me = $('#userName').val();
-	var obj = JSON.parse(jsonText);
+	var obj = JSON.parse(JSON.stringifyjsonText));
 	var from = obj.username;
 	var msg = obj.message;
 
