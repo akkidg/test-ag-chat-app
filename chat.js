@@ -71,9 +71,9 @@ $(document).ready(function(){
 	//alert(name);
 	var name = prompt("What's Your Name?");
 	$('#userId').val(id);
-	$('#userName').val(name);	
-	socket.emit('addUser',name,id);	
+	$('#userName').val(name);			
 	$('#messages').append('<li> Welcome ' + name + ' </li>');
+	socket.emit('addUser',name,id);
 	//socket.emit('chatMessage','System','<b>' + name + '</b> has joined discussion.');
 });
 
