@@ -18,7 +18,7 @@ function notifyTyping(){
 }
 
 socket.on('systemMessage',function(jsonText){	
-	alert('systemMessage '+JSON.stringify(jsonText));
+	alert('systemMessage ');
 	var obj = JSON.parse(JSON.stringify(jsonText));	
 	$('#messages').append('<li>' + obj.message + ' </li>');
 });
