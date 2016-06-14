@@ -29,8 +29,8 @@ socket.on('login',function(numUsers){
 });
 
 socket.on('addUser',function(jsonText){
-	var obj = JSON.parse(jsonText);
-	var user = obj.userName;
+	var obj = JSON.parse(JSON.stringify(jsonText));
+	var user = obj.username;
 	var numUsers  = obj.numUsers;
 	$('#messages').append('<li><b style="color:#009afd">' + user + '</b> joined room.</li>');	
 	$('#messages').append('<li>' + numUsers + '</b> participants.</li>');
