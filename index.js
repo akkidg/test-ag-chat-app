@@ -26,8 +26,7 @@ io.on('connection',function(socket){
 			numUsers:numUsers
 		});
 		socket.broadcast.emit('addUser',{username:socket.username,numUsers:numUsers});
-		var jsonAnswer = JSON.stringify({message: userName + ' welcome.'});
-		io.emit('systemMessage',jsonAnswer);	
+		io.emit('systemMessage',"akash");	
 	});
 	
 	socket.on('chatMessage',function(msg){		
