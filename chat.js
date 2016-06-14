@@ -19,7 +19,7 @@ function notifyTyping(){
 
 socket.on('systemMessage',function(jsonText){	
 	alert('systemMessage ');
-	var obj = JSON.parse(JSON.stringify(jsonText));	
+	var obj = JSON.parse(jsonText);	
 	$('#messages').append('<li>' + obj.message + ' </li>');
 });
 
@@ -73,7 +73,7 @@ $(document).ready(function(){
 	var name = prompt("What's Your Name?");
 	$('#userId').val(id);
 	$('#userName').val(name);	
-	socket.emit('addUser',id,name);	
+	socket.emit('addUser',name,id);	
 	//socket.emit('chatMessage','System','<b>' + name + '</b> has joined discussion.');
 });
 
