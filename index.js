@@ -29,7 +29,7 @@ io.on('connection',function(socket){
 		//io.emit('systemMessage',"akash");	
 	});
 	
-	socket.on('chatMessage',function(user,msg){		
+	socket.on('chatMessage',function(msg){		
 		socket.broadcast.emit('chatMessage',{username: socket.username,message: msg});			
 	});
 	

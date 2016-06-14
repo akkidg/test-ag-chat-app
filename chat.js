@@ -1,11 +1,11 @@
 var socket = io('http://test-ag-chat-app.herokuapp.com/');
 
 function submitfunction(){
-	var user = $('#userName').val();
 	var msg = $('#m').val();
 	//alert("I am an alert box!");
 	if(msg != ''){
-		socket.emit('chatMessage',user,msg);
+		$('#messages').append('<li><b style="color:green">' + from + '</b>:' + msg + '</li>');
+		socket.emit('chatMessage',msg);
 	}
 	$('#m').val('').focus();
 	return false;
