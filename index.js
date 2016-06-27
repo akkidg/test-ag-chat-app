@@ -21,12 +21,12 @@ io.on('connection',function(socket){
 		if(addedUser) return;
 
 		socket.username = username;
-		socket.userId = userId;
+		socket.id = userId;
 		++numUsers;		
 		addedUser = true;
 
 		// Add userId into globl user array
-		userUniqueIds[socket.userId] = socket; 
+		userUniqueIds[socket.id] = socket; 
 
 		socket.emit('login',{
 			numUsers:numUsers
@@ -38,7 +38,7 @@ io.on('connection',function(socket){
 	// One to One Messaging		
 
 	socket.on('chatMessage',function(msg,userId){		
-		userUniqueIds[userId].emit('chatMessage',{username: socket.username,message: msg});			
+		io.to(userId).emit('chatMessage',{username: socket.username,message: msg});			
 	});
 	
 	socket.on('typing',function(userId){			
