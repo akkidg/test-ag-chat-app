@@ -5,6 +5,7 @@ var path = require('path');
 var port = process.env.PORT || 5000	
 
 var numUsers = 0;
+var userSocketIds = {};
 
 app.get('/',function(req,res){
 	var express = require('express');
@@ -20,7 +21,8 @@ io.on('connection',function(socket){
 		if(addedUser) return;
 
 		socket.username = username;
-		socket.id = id;
+		userSocketIds[id] = socket.id;
+
 		++numUsers;		
 		addedUser = true;
 		socket.emit('login',{
@@ -31,7 +33,7 @@ io.on('connection',function(socket){
 	});
 		
 	socket.on('chatMessage',function(msg,id){		
-		socket.broadcast.to(id).emit('chatMessage',{username: socket.username,message: msg});			
+		socket.broadcast.to(userSocketIds[id]).emit('chatMessage',{username: socket.username,message: msg});			
 	});
 	
 	socket.on('typing',function(){			
