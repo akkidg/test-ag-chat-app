@@ -2,7 +2,7 @@ var app = require('express')();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var path = require('path');
-var port = process.env.PORT || 5000
+var port = process.env.PORT || 5000	
 
 var numUsers = 0;
 
@@ -20,7 +20,7 @@ io.on('connection',function(socket){
 		if(addedUser) return;
 
 		socket.username = username;
-		socket.id = id;
+		//socket.id = id;
 		++numUsers;		
 		addedUser = true;
 		socket.emit('login',{
