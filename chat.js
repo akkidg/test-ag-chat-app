@@ -59,7 +59,7 @@ socket.on('userLeft',function(jsonText){
 });
 
 $(document).ready(function(){
-	var id = makeid();		
+	var id = 1;		
 	//alert(name);
 	var name = prompt("What's Your Name?");
 	$('#userId').val(id);
