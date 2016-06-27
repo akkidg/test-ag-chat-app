@@ -38,7 +38,7 @@ io.on('connection',function(socket){
 	// One to One Messaging		
 
 	socket.on('chatMessage',function(msg,userId){		
-		io.to(userId).emit('chatMessage',{username: socket.username,message: msg});			
+		socket.broadcast.to(userId).emit('chatMessage',{username: socket.username,message: msg});			
 	});
 	
 	socket.on('typing',function(userId){			
