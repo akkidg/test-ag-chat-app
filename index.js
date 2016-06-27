@@ -20,7 +20,7 @@ io.on('connection',function(socket){
 		if(addedUser) return;
 
 		socket.username = username;
-		//socket.id = id;
+		socket.id = id;
 		++numUsers;		
 		addedUser = true;
 		socket.emit('login',{
