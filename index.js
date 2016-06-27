@@ -26,7 +26,7 @@ io.on('connection',function(socket){
 		addedUser = true;
 
 		// Add userId into globl user array
-		userUniqueIds[socket.id] = socket; 
+		//userUniqueIds[socket.id] = socket; 
 
 		socket.emit('login',{
 			numUsers:numUsers
@@ -42,11 +42,11 @@ io.on('connection',function(socket){
 	});
 	
 	socket.on('typing',function(userId){			
-		userUniqueIds[userId].emit('typing',{username:socket.username});
+		socket.broadcast.emit('typing',{username:socket.username});
 	});	
 
 	socket.on('stopTyping',function(userId){			
-		userUniqueIds[userId].emit('stopTyping',{username:socket.username});
+		socket.broadcast.emit.emit('stopTyping',{username:socket.username});
 	});	
 
 	// Group Messaging
