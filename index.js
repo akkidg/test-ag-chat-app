@@ -37,7 +37,7 @@ io.on('connection',function(socket){
 	// Events For Direct Messaging
 		
 	socket.on('directMessage',function(msg,userId){		
-		io.to(userSocketIds[userId]).emit('directMessage',{dataKey: msg});			
+		io.to(userSocketIds[userId]).emit('directMessage',{'com.chatapp.data': msg});			
 	});
 	
 	socket.on('typing',function(userId){			
@@ -55,7 +55,7 @@ io.on('connection',function(socket){
 	});
 
 	socket.on('groupMessage',function(groupName,message){
-		io.to(groupName).emit('groupMessage',{dataKey:message});
+		io.to(groupName).emit('groupMessage',{'com.chatapp.data':message});
 	});
 
 	socket.on('groupLeave',function(groupName){
