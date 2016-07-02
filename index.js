@@ -7,6 +7,8 @@ var port = process.env.PORT || 5000
 var numUsers = 0;
 var userSocketIds = {};
 
+var dataKey = 'com.chatapp.data';
+
 app.get('/',function(req,res){
 	var express = require('express');
 	app.use(express.static(path.join(__dirname)));	
@@ -31,26 +33,39 @@ io.on('connection',function(socket){
 		socket.broadcast.emit('addUser',{username:socket.username,numUsers:numUsers});
 		//io.emit('systemMessage',"akash");	
 	});
+
+	// Events For Direct Messaging
 		
-	socket.on('chatMessage',function(msg,id){		
-		io.to(userSocketIds[id]).emit('chatMessage',{username: socket.username,message: msg});			
+	socket.on('directMessage',function(msg,userId){		
+		io.to(userSocketIds[userId]).emit('directMessage',{dataKey: msg});			
 	});
 	
-	socket.on('typing',function(){			
-		socket.broadcast.emit('typing',{username:socket.username});
+	socket.on('typing',function(userId){			
+		io.to(userSocketIds[userId]).emit('typing',{username:socket.username});
 	});	
 
-	socket.on('stopTyping',function(){			
-		socket.broadcast.emit('stopTyping',{username:socket.username});
-	});	
-	
-	socket.on('directMessage',function(){
-		
+	socket.on('stopTyping',function(userId){			
+		io.to(userSocketIds[userId]).('stopTyping',{username:socket.username});
+	});		
+
+	// Events For Group Messaging
+
+	socket.on('groupJoin',function(groupName){
+		socket.join(groupName);
+	});
+
+	socket.on('groupMessage',function(groupName,message){
+		io.to(groupName).emit('groupMessage',{dataKey:message});
+	});
+
+	socket.on('groupLeave',function(groupName){
+		socket.leave(groupName);
 	});
 	
 	socket.on('disconnect',function(){
 		if(addedUser){
 			--numUsers;	
+			delete userSocketIds[socket.id];
 			socket.broadcast.emit('userLeft',{username:socket.username,numUsers: numUsers});
 		}
 	});

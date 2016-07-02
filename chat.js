@@ -43,7 +43,7 @@ socket.on('typing',function(jsonText){
 	setTimeout(function(){$('#notifyUser').text('');},10000);
 });
 
-socket.on('chatMessage',function(jsonText){
+socket.on('directMessage',function(jsonText){
 	var me = $('#userName').val();
 	var obj = JSON.parse(JSON.stringify(jsonText));
 	var from = obj.username;
