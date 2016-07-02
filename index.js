@@ -45,7 +45,7 @@ io.on('connection',function(socket){
 	});	
 
 	socket.on('stopTyping',function(userId){			
-		io.to(userSocketIds[userId]).('stopTyping',{username:socket.username});
+		io.to(userSocketIds[userId]).emit('stopTyping',{username:socket.username});
 	});		
 
 	// Events For Group Messaging
