@@ -36,8 +36,9 @@ io.on('connection',function(socket){
 
 	// Events For Direct Messaging
 		
-	socket.on('directMessage',function(msg,userId){		
-		io.to(userSocketIds[userId]).emit('directMessage',{'com.chatapp.data': msg});			
+	socket.on('directMessage',function(msg,userId){
+		var msgObj = JSON.parse(jsonText);		
+		io.to(userSocketIds[userId]).emit('directMessage',{'com.chatapp.data': msgObj});			
 	});
 	
 	socket.on('typing',function(userId){			
