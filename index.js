@@ -38,7 +38,7 @@ io.on('connection',function(socket){
 		
 	socket.on('directMessage',function(msg,userId){
 		var msgObj = JSON.parse(msg);		
-		io.to(userSocketIds[userId]).emit('directMessage',{'com.chatapp.Data': msgObj});			
+		io.to(userSocketIds[userId]).emit('directMessage',msgObj);			
 	});
 	
 	socket.on('typing',function(userId){			
@@ -49,14 +49,29 @@ io.on('connection',function(socket){
 		io.to(userSocketIds[userId]).emit('stopTyping',{username:socket.username});
 	});		
 
-	// Events For Group Messaging
+	// Events For Group Management
+
+	/*socket.on('newGroup',function(jsonGroupData){
+
+	});
+
+	socket.on('newGroupMember',function(jsonGroupData){
+
+	});
+
+	socket.on('groupMemberLeft',function(jsonGroupData){
+
+	});*/
+
+	// Events Group Messaging
 
 	socket.on('groupJoin',function(groupName){
 		socket.join(groupName);
 	});
 
-	socket.on('groupMessage',function(groupName,message){
-		io.to(groupName).emit('groupMessage',{'com.chatapp.data':message});
+	socket.on('groupMessage',function(message,groupName){
+		var msgObj = JSON.parse(message);	
+		io.to(groupName).emit('groupMessage',msgObj);
 	});
 
 	socket.on('groupLeave',function(groupName){
