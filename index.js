@@ -71,7 +71,7 @@ io.on('connection',function(socket){
 
 	socket.on('groupMessage',function(message,groupName){
 		var msgObj = JSON.parse(message);	
-		io.to(groupName).emit('groupMessage',msgObj);
+		io.broadcast.to(groupName).emit('groupMessage',msgObj);
 	});
 
 	socket.on('groupLeave',function(groupName){
