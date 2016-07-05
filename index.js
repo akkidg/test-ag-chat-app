@@ -39,9 +39,9 @@ io.on('connection',function(socket){
 
 	socket.on('userStatus',function(sender,receiver){
 		//var socketId = ;
-		var index = userSocketIds.indexOf(userSocketIds[receiver].toString());
+		//var index = userSocketIds.indexOf(.toString());
 
-		if(index != -1){
+		if(userSocketIds[receiver] != null){
 			title = 'status online';
 			alert = {'status':9,'userStatus':1,'sender':sender};
 			dataJson = {'title':title,'alert':alert};
