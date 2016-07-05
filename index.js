@@ -50,9 +50,9 @@ io.on('connection',function(socket){
 	});
 
 	socket.on('typing',function(sender,receiver){
-		var index = userSocketIds.indexOf(userSocketIds[receiver]);
+		//var index = userSocketIds.indexOf(userSocketIds[receiver]);
 
-		if(index != -1){	
+		if(userSocketIds[receiver] != null){
 		title = 'user typing';
 		alert = {'status':10,'sender':sender};
 		dataJson = {'title':title,'alert':alert};			
@@ -61,9 +61,9 @@ io.on('connection',function(socket){
 	});	
 
 	socket.on('stopTyping',function(sender,receiver){			
-		var index = userSocketIds.indexOf(userSocketIds[receiver]);
+		//var index = userSocketIds.indexOf(userSocketIds[receiver]);
 
-		if(index != -1){	
+		if(userSocketIds[receiver] != null){	
 		title = 'user stop typing';
 		alert = {'status':11,'sender':sender};
 		dataJson = {'title':title,'alert':alert};			
