@@ -38,7 +38,7 @@ io.on('connection',function(socket){
 	// Event For User status updating (online,typing)
 
 	socket.on('userStatus',function(sender,receiver){
-		int index = userSocketIds.indexOf(userSocketIds[receiver]);
+		var index = userSocketIds.indexOf(userSocketIds[receiver]);
 
 		if(index != -1){
 			title = 'status online';
@@ -49,7 +49,7 @@ io.on('connection',function(socket){
 	});
 
 	socket.on('typing',function(sender,receiver){
-		int index = userSocketIds.indexOf(userSocketIds[receiver]);
+		var index = userSocketIds.indexOf(userSocketIds[receiver]);
 
 		if(index != -1){	
 		title = 'user typing';
@@ -60,7 +60,7 @@ io.on('connection',function(socket){
 	});	
 
 	socket.on('stopTyping',function(sender,receiver){			
-		int index = userSocketIds.indexOf(userSocketIds[receiver]);
+		var index = userSocketIds.indexOf(userSocketIds[receiver]);
 
 		if(index != -1){	
 		title = 'user stop typing';
