@@ -24,14 +24,19 @@ io.on('connection',function(socket){
 		if(addedUser) return;
 
 		socket.username = username;
-		userSocketIds[id] = socket.id;
 
-		++numUsers;		
-		addedUser = true;
+		if(userSocketIds[id] == null){
+			userSocketIds[id] = socket.id;			
+			++numUsers;				
+			addedUser = true;			
+			socket.broadcast.emit('addUser',{username:socket.username,numUsers:numUsers});
+		}else{
+			userSocketIds[id] = socket.id;	
+		}
+			
 		socket.emit('login',{
 			numUsers:numUsers
 		});
-		socket.broadcast.emit('addUser',{username:socket.username,numUsers:numUsers});
 		//io.emit('systemMessage',"akash");	
 	});
 
