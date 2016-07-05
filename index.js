@@ -39,7 +39,7 @@ io.on('connection',function(socket){
 
 	socket.on('userStatus',function(sender,receiver){
 		var socketId = userSocketIds[receiver];
-		var index = userSocketIds.indexOf(socketId);
+		var index = userSocketIds.indexOf(socketId.toString());
 
 		if(index != -1){
 			title = 'status online';
