@@ -38,8 +38,8 @@ io.on('connection',function(socket){
 	// Event For User status updating (online,typing)
 
 	socket.on('userStatus',function(sender,receiver){
-		var socketId = userSocketIds[receiver];
-		var index = userSocketIds.indexOf(socketId.toString());
+		var socketId = ;
+		var index = userSocketIds.indexOf(userSocketIds[receiver].toString());
 
 		if(index != -1){
 			title = 'status online';
