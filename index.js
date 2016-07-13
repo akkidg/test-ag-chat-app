@@ -93,19 +93,19 @@ io.on('connection',function(socket){
 		if(rooms[groupName] == null){
 			var room = new Room(groupName,totParticipant);
 			isTurn = true;
-			Player player = new Player(socket.id,socket.username,isTurn);
+			var player = new Player(socket.id,socket.username,isTurn);
 			room.addPlayer(player);
 		}else{
 			isTurn = false;
 			Room room = rooms[groupName];
 			var isPlayerPresent = false;
-			for(Player player in room.players){
+			for(var player in room.players){
 				if(player.id == socket.id){
 					isPlayerPresent = true;
 				}
 			}
 			if(!isPlayerPresent){
-				Player player = new Player(socket.id,socket.username,isTurn);
+				var player = new Player(socket.id,socket.username,isTurn);
 				room.addPlayer(player);			
 			}
 
@@ -116,7 +116,7 @@ io.on('connection',function(socket){
 	});
 
 	socket.on('turnComplete',function(groupName){
-		Player player;
+		var player;
 		if(rooms[groupName] != null){
 			var room = rooms[groupName];
 			for(var i=0;i<room.players.length;i++){
