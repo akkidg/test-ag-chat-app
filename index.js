@@ -10,7 +10,6 @@ var dataJson, title, alert;
 // storing UserSocket Id's globally
 var userSocketIds = {};
 
-
 // Storing Rooms in Global Array
 var rooms = {};
 
@@ -62,10 +61,10 @@ io.on('connection',function(socket){
 		//var index = userSocketIds.indexOf(userSocketIds[receiver]);
 
 		if(userSocketIds[receiver] != null){
-		title = 'user typing';
-		alert = {'status':10,'sender':sender};
-		dataJson = {'title':title,'alert':alert};			
-		io.to(userSocketIds[receiver]).emit('typing',dataJson);
+			title = 'user typing';
+			alert = {'status':10,'sender':sender};
+			dataJson = {'title':title,'alert':alert};			
+			io.to(userSocketIds[receiver]).emit('typing',dataJson);
 		}
 	});	
 
@@ -73,10 +72,10 @@ io.on('connection',function(socket){
 		//var index = userSocketIds.indexOf(userSocketIds[receiver]);
 
 		if(userSocketIds[receiver] != null){	
-		title = 'user stop typing';
-		alert = {'status':11,'sender':sender};
-		dataJson = {'title':title,'alert':alert};			
-		io.to(userSocketIds[receiver]).emit('typing',dataJson);
+			title = 'user stop typing';
+			alert = {'status':11,'sender':sender};
+			dataJson = {'title':title,'alert':alert};			
+			io.to(userSocketIds[receiver]).emit('typing',dataJson);
 		}
 	}); 
 
@@ -97,14 +96,15 @@ io.on('connection',function(socket){
 	// Events For Group Subscription
 
 	socket.on('subscribe',function(groupName,totParticipant){
-		var isTurn;
+		// room created by group name
+		socket.join(groupName);
+
 		if(rooms[groupName] == null){
 			var room = new Room(groupName,totParticipant);
-			isTurn = true;
-			var player = new Player(socket.id,socket.username,isTurn);
+			var player = new Player(socket.id,socket.username,true);
 			room.addPlayer(player);
+			rooms[groupName] = room;
 		}else{
-			isTurn = false;
 			var room = rooms[groupName];
 			var isPlayerPresent = false;
 			for(var player in room.players){
@@ -113,7 +113,7 @@ io.on('connection',function(socket){
 				}
 			}
 			if(!isPlayerPresent){
-				var player = new Player(socket.id,socket.username,isTurn);
+				var player = new Player(socket.id,socket.username,false);
 				room.addPlayer(player);			
 			}
 
