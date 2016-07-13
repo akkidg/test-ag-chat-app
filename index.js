@@ -89,11 +89,14 @@ io.on('connection',function(socket){
 	// Events For Group Subscription
 
 	socket.on('subscribe',function(groupName,totParticipant){
+		var isTurn;
 		if(rooms[groupName] == null){
 			var room = new Room(groupName,totParticipant);
-			Player player = new Player(socket.id,socket.username,false);
+			isTurn = true;
+			Player player = new Player(socket.id,socket.username,isTurn);
 			room.addPlayer(player);
 		}else{
+			isTurn = false;
 			Room room = rooms[groupName];
 			var isPlayerPresent = false;
 			for(Player player in room.players){
@@ -102,7 +105,7 @@ io.on('connection',function(socket){
 				}
 			}
 			if(!isPlayerPresent){
-				Player player = new Player(socket.id,socket.username,true);
+				Player player = new Player(socket.id,socket.username,isTurn);
 				room.addPlayer(player);			
 			}
 
