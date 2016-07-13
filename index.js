@@ -86,6 +86,13 @@ io.on('connection',function(socket){
 		var msgObj = JSON.parse(msg);		
 		io.to(userSocketIds[userId]).emit('directMessage',msgObj);			
 	});
+
+	// Event For Group Messaging
+
+	socket.on('groupMessage',function(message,groupName){
+		var msgObj = JSON.parse(message);	
+		socket.broadcast.to(groupName).emit('groupMessage',msgObj);
+	});
 				
 	// Events For Group Subscription
 
@@ -181,25 +188,34 @@ Room.prototype.addPlayer = function(player){
 };
 
 Room.prototype.startGame = function(){
-	title = 'Turn System';
-	alert = {'status':13,'myTurn':true};
+	title = 'Round Started';
+	alert = {'status':12,'isPlayStart':true};
 	dataJson = {'title':title,'alert':alert};
 
+	//socket.broadcast.to(this.room_name).emit('RoundStart',dataJson);
+	socket.to(this.room_name).emit('gameStart',dataJson);
+
 	for(var i=0;i<this.players.length;i++){
-		if(this.players[i].isTurn){
-			io.to(this.players[i].id).emit('turn',dataJson);	
+		if(this.players[i].isTurn){			
+			alert = {'status':13,'isMyTurn':true};
+			dataJson = {'title':title,'alert':alert};
+			socket.broadcast.to(this.players[i].id).emit('turn',dataJson);	
 		}		
 	}
 };
 
 Room.prototype.progressRound = function(player){
 	title = 'Turn System';
-	alert = {'status':13,'myTurn':true};
+	alert = {'status':13,'myTurn':false};
 	dataJson = {'title':title,'alert':alert};
+	socket.broadcast.to(this.room_name).emit('turn',dataJson);
 
 	for(var i=0;i<this.players.length;i++){
 		if(this.players[i].isTurn){
-			io.to(this.players[i].id).emit('turn',dataJson);		
+			title = 'Turn System';
+			alert = {'status':13,'isMyTurn':true};
+			dataJson = {'title':title,'alert':alert};
+			socket.broadcast.to(this.players[i].id).emit('turn',dataJson);		
 		}else{			
 			this.players[i].isTurn = false;
 		}		
