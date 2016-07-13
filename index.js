@@ -206,7 +206,7 @@ Room.prototype.startGame = function(socket){
 
 Room.prototype.progressRound = function(socket){
 	title = 'Turn System';
-	alert = {'status':13,'myTurn':false};
+	alert = {'status':13,'isMyTurn':false};
 	dataJson = {'title':title,'alert':alert};
 	socket.broadcast.to(this.room_name).emit('turn',dataJson);
 
