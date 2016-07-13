@@ -141,7 +141,7 @@ io.on('connection',function(socket){
 					player.isTurn = true;
 				}
 			}
-			room.progressRound(player,socket);	
+			room.progressRound(socket);	
 		}
 	});
 
@@ -204,7 +204,7 @@ Room.prototype.startGame = function(socket){
 	}
 };
 
-Room.prototype.progressRound = function(player,socket){
+Room.prototype.progressRound = function(socket){
 	title = 'Turn System';
 	alert = {'status':13,'myTurn':false};
 	dataJson = {'title':title,'alert':alert};
