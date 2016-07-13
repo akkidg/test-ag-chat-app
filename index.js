@@ -10,6 +10,7 @@ var dataJson, title, alert;
 // storing UserSocket Id's globally
 var userSocketIds = {};
 
+
 // Storing Rooms in Global Array
 var rooms = {};
 
@@ -97,7 +98,7 @@ io.on('connection',function(socket){
 			room.addPlayer(player);
 		}else{
 			isTurn = false;
-			Room room = rooms[groupName];
+			var room = rooms[groupName];
 			var isPlayerPresent = false;
 			for(var player in room.players){
 				if(player.id == socket.id){
