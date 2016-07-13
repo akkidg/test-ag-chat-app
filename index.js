@@ -3,12 +3,15 @@ var http = require('http').Server(app);
 var io = require('socket.io')(http);
 var path = require('path');
 var port = process.env.PORT || 5000	
-
+	
 var numUsers = 0;
-var userSocketIds = {};
 var dataJson, title, alert;
 
-var dataKey = 'com.chatapp.data';
+// storing UserSocket Id's globally
+var userSocketIds = {};
+
+// Storing Rooms in Global Array
+var rooms = {};
 
 app.get('/',function(req,res){
 	var express = require('express');
@@ -83,35 +86,64 @@ io.on('connection',function(socket){
 		io.to(userSocketIds[userId]).emit('directMessage',msgObj);			
 	});
 				
-	// Events For Group Management
+	// Events For Group Subscription
 
-	/*socket.on('newGroup',function(jsonGroupData){
+	socket.on('subscribe',function(groupName,totParticipant){
+		if(rooms[groupName] == null){
+			var room = new Room(groupName,totParticipant);
+			Player player = new Player(socket.id,socket.username,false);
+			room.addPlayer(player);
+		}else{
+			Room room = rooms[groupName];
+			var isPlayerPresent = false;
+			for(Player player in room.players){
+				if(player.id == socket.id){
+					isPlayerPresent = true;
+				}
+			}
+			if(!isPlayerPresent){
+				Player player = new Player(socket.id,socket.username,true);
+				room.addPlayer(player);			
+			}
 
+			if(room.players.length == room.maxPlayer){
+				room.startGame();		
+			}		
+		}
 	});
 
-	socket.on('newGroupMember',function(jsonGroupData){
+	socket.on('turnComplete',function(groupName){
+		Player player;
+		if(rooms[groupName] != null){
+			var room = rooms[groupName];
+			for(var i=0;i<room.players.length;i++){
+				player = room.players[i];
+				if(player.isTurn){
+					player.isTurn = false;
+				} 
 
+				if(i == room.players.length - 1){
+					player = room.players[0];	
+					player.isTurn = true;
+				}else{
+					player = room.players[i++];	
+					player.isTurn = true;
+				}
+			}
+			room.progressRound(player);	
+		}
 	});
 
-	socket.on('groupMemberLeft',function(jsonGroupData){
-
-	});*/
-
-	// Events Group Messaging
-
-	/*socket.on('groupJoin',function(groupName){
-		socket.join(groupName);
-	});*/
-
-	socket.on('groupMessage',function(message,groupName){
-		var msgObj = JSON.parse(message);	
-		socket.broadcast.to(groupName).emit('groupMessage',msgObj);
-	});
-
-	/*socket.on('groupLeave',function(groupName){
-		socket.leave(groupName);
+	/*// Event For Start Conversation 
+	socket.on('startGame',function(groupName){
+		Room room = rooms[groupName];
+		if(room != null){
+			room.playStart = true;
+			room.progressRound();			
+		}			
 	});*/
 	
+	// Event on Socket Disonnection
 	socket.on('disconnect',function(){
 		if(addedUser){
 			--numUsers;	
@@ -124,3 +156,61 @@ io.on('connection',function(socket){
 http.listen(port,function(){
 	console.log('listening on ' + port);	
 });
+
+// Javascript Prototyping Objects For Room, Players
+
+function Room(room_name,maxPlayer){
+	this.players = [];
+	this.room_name = room_name;
+	this.maxPlayer = maxPlayer;
+	this.playStart = false;
+};
+
+function Player(player_id,name,isTurn){
+	this.id = player_id;
+	this.name = name;
+	this.isTurn = isTurn;
+};
+
+Room.prototype.addPlayer = function(player){
+	this.players.push(player);
+};
+
+Room.prototype.startGame = function(){
+	title = 'Turn System';
+	alert = {'status':13,'myTurn':true};
+	dataJson = {'title':title,'alert':alert};
+
+	for(var i=0;i<this.players.length;i++){
+		if(this.players[i].isTurn){
+			io.to(this.players[i].id).emit('turn',dataJson);	
+		}		
+	}
+};
+
+Room.prototype.progressRound = function(player){
+	title = 'Turn System';
+	alert = {'status':13,'myTurn':true};
+	dataJson = {'title':title,'alert':alert};
+
+	for(var i=0;i<this.players.length;i++){
+		if(this.players[i].isTurn){
+			io.to(this.players[i].id).emit('turn',dataJson);		
+		}else{			
+			this.players[i].isTurn = false;
+		}		
+	}
+};
+
+
+
+
+
+
+
+
+
+
+
+
+
