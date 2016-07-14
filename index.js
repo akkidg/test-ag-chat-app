@@ -193,7 +193,7 @@ Room.prototype.startGame = function(socket,io){
 	dataJson = {'title':title,'alert':alert};
 
 	//socket.broadcast.to(this.room_name).emit('RoundStart',dataJson);
-	io.to(this.room_name).emit('gameStart',dataJson);
+	io.in(this.room_name).emit('gameStart',dataJson);
 
 	for(var i=0;i<this.players.length;i++){
 		if(this.players[i].isTurn){			
