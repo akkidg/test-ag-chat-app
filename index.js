@@ -118,7 +118,7 @@ io.on('connection',function(socket){
 			}
 
 			if(room.players.length == room.maxPlayer){
-				room.startGame(socket,io);		
+				room.startGame(socket);		
 			}		
 		}
 	});
@@ -141,7 +141,7 @@ io.on('connection',function(socket){
 					player.isTurn = true;
 				}
 			}
-			room.progressRound(socket,io);	
+			room.progressRound(socket);	
 		}
 	});
 
@@ -187,7 +187,7 @@ Room.prototype.addPlayer = function(player){
 	this.players.push(player);
 };
 
-Room.prototype.startGame = function(socket,io){
+Room.prototype.startGame = function(socket){
 	title = 'Round Started';
 	alert = {'status':12,'isPlayStart':true};
 	dataJson = {'title':title,'alert':alert};
@@ -204,7 +204,7 @@ Room.prototype.startGame = function(socket,io){
 	}
 };
 
-Room.prototype.progressRound = function(socket,io){
+Room.prototype.progressRound = function(socket){
 	title = 'Turn System';
 	alert = {'status':13,'isMyTurn':false};
 	dataJson = {'title':title,'alert':alert};
