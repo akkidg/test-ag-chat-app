@@ -193,7 +193,7 @@ Room.prototype.startGame = function(socket,groupName){
 	dataJson = {'title':title,'alert':alert};
 
 	//socket.broadcast.to(this.room_name).emit('RoundStart',dataJson);
-	socket.to(groupName).emit('gameStart',dataJson);
+	socket.to(this.room_name).emit('gameStart',dataJson);
 
 	for(var i=0;i<this.players.length;i++){
 		if(this.players[i].isTurn){			
@@ -208,7 +208,7 @@ Room.prototype.progressRound = function(socket,groupName){
 	title = 'Turn System';
 	alert = {'status':13,'isMyTurn':false};
 	dataJson = {'title':title,'alert':alert};
-	socket.broadcast.to(groupName).emit('turn',dataJson);
+	socket.broadcast.to(this.room_name).emit('turn',dataJson);
 
 	for(var i=0;i<this.players.length;i++){
 		if(this.players[i].isTurn){
