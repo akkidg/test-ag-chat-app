@@ -126,9 +126,15 @@ io.on('connection',function(socket){
 	socket.on('unSubscribe',function(groupName,from){
 		socket.leave(groupName);
 		if(rooms[groupName] != null){
-			//var room = rooms[groupName];
-			delete rooms[groupName];
+			var room = rooms[groupName];
+			for(var i=0;i<room.players.length;i++){
+				player = room.players[i];	
+				if(player.id == userSocketIds[from]){
+					room.players.splice(i,1);
+				}						
+			}			
 		}
+			room.stopRound(socket);
 	});
 
 	socket.on('turnComplete',function(groupName){
@@ -176,7 +182,7 @@ http.listen(port,function(){
 	console.log('listening on ' + port);	
 });
 
-// Javascript Prototyping Objects For Room, Players
+// Javascript Prototyping Objects For Room, Players & Prototype Functions
 
 function Room(room_name,maxPlayer){
 	this.players = [];
@@ -228,6 +234,13 @@ Room.prototype.progressRound = function(socket){
 			this.players[i].isTurn = false;
 		}		
 	}
+};
+
+Room.prototype.stopRound = function(socket){
+	title = 'Game Stops';
+	alert = {'status':14,'isGameStops':true};
+	dataJson = {'title':title,'alert':alert};
+	socket.broadcast.to(this.room_name).emit('gameStops',dataJson);
 };
 
 
