@@ -137,11 +137,11 @@ io.on('connection',function(socket){
 					player = room.players[0];	
 					player.isTurn = true;
 				}else{
-					player = room.players[i++];	
+					player = room.players[++i];	
 					player.isTurn = true;
 				}
 			}
-			room.progressRound(socket,groupName);	
+			room.progressRound(socket);	
 		}
 	});
 
@@ -159,6 +159,8 @@ io.on('connection',function(socket){
 		if(addedUser){
 			--numUsers;	
 			socket.broadcast.emit('userLeft',{username:socket.username,numUsers: numUsers});
+
+
 		}
 	});
 	
@@ -204,7 +206,7 @@ Room.prototype.startGame = function(socket,groupName){
 	}
 };
 
-Room.prototype.progressRound = function(socket,groupName){
+Room.prototype.progressRound = function(socket){
 	title = 'Turn System';
 	alert = {'status':13,'isMyTurn':false};
 	dataJson = {'title':title,'alert':alert};
