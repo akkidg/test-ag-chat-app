@@ -95,30 +95,30 @@ io.on('connection',function(socket){
 				
 	// Events For Group Subscription
 
-	socket.on('subscribe',function(groupName,totParticipant){
+	socket.on('subscribe',function(groupName,totParticipant,from){
 		// room created by group name
 		socket.join(groupName);
 
 		if(rooms[groupName] == null){
 			var room = new Room(groupName,totParticipant);
-			var player = new Player(socket.id,socket.username,true);
+			var player = new Player(userSocketIds[from],socket.username,true);
 			room.addPlayer(player);
 			rooms[groupName] = room;
 		}else{
 			var room = rooms[groupName];
 			var isPlayerPresent = false;
 			for(var player in room.players){
-				if(player.id == socket.id){
+				if(player.id == userSocketIds[from]){
 					isPlayerPresent = true;
 				}
 			}
 			if(!isPlayerPresent){
-				var player = new Player(socket.id,socket.username,false);
+				var player = new Player(userSocketIds[from],socket.username,false);
 				room.addPlayer(player);			
 			}
 
 			if(room.players.length == room.maxPlayer){
-				room.startGame(socket);		
+				room.startGame(socket,io);		
 			}		
 		}
 	});
@@ -141,7 +141,7 @@ io.on('connection',function(socket){
 					player.isTurn = true;
 				}
 			}
-			room.progressRound(socket);	
+			room.progressRound(socket,io);	
 		}
 	});
 
@@ -187,24 +187,24 @@ Room.prototype.addPlayer = function(player){
 	this.players.push(player);
 };
 
-Room.prototype.startGame = function(socket){
+Room.prototype.startGame = function(socket,io){
 	title = 'Round Started';
 	alert = {'status':12,'isPlayStart':true};
 	dataJson = {'title':title,'alert':alert};
 
 	//socket.broadcast.to(this.room_name).emit('RoundStart',dataJson);
-	socket.to(this.room_name).emit('gameStart',dataJson);
+	io.to(this.room_name).emit('gameStart',dataJson);
 
 	for(var i=0;i<this.players.length;i++){
 		if(this.players[i].isTurn){			
 			alert = {'status':13,'isMyTurn':true};
 			dataJson = {'title':title,'alert':alert};
-			socket.broadcast.to(this.players[i].id).emit('turn',dataJson);	
+			io.to(this.players[i].id).emit('turn',dataJson);	
 		}		
 	}
 };
 
-Room.prototype.progressRound = function(socket){
+Room.prototype.progressRound = function(socket,io){
 	title = 'Turn System';
 	alert = {'status':13,'isMyTurn':false};
 	dataJson = {'title':title,'alert':alert};
@@ -215,7 +215,7 @@ Room.prototype.progressRound = function(socket){
 			title = 'Turn System';
 			alert = {'status':13,'isMyTurn':true};
 			dataJson = {'title':title,'alert':alert};
-			socket.broadcast.to(this.players[i].id).emit('turn',dataJson);		
+			io.to(this.players[i].id).emit('turn',dataJson);		
 		}else{			
 			this.players[i].isTurn = false;
 		}		
