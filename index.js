@@ -123,6 +123,14 @@ io.on('connection',function(socket){
 		}
 	});
 
+	socket.on('unSubscribe',function(groupName,from){
+		socket.leave(groupName);
+		if(rooms[groupName] != null){
+			//var room = rooms[groupName];
+			delete rooms[groupName];
+		}
+	});
+
 	socket.on('turnComplete',function(groupName){
 		var player;
 		if(rooms[groupName] != null){
@@ -158,9 +166,7 @@ io.on('connection',function(socket){
 	socket.on('disconnect',function(){
 		if(addedUser){
 			--numUsers;	
-			socket.broadcast.emit('userLeft',{username:socket.username,numUsers: numUsers});
-
-
+			socket.broadcast.emit('userLeft',{username:socket.username,numUsers: numUsers});			
 		}
 	});
 	
