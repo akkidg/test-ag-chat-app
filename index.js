@@ -118,7 +118,7 @@ io.on('connection',function(socket){
 			}
 
 			if(room.players.length == room.maxPlayer){
-				room.startGame(socket,groupName);		
+				room.startGame(socket);		
 			}		
 		}
 	});
@@ -131,15 +131,15 @@ io.on('connection',function(socket){
 				player = room.players[i];
 				if(player.isTurn){
 					player.isTurn = false;
-				} 
-
-				if(i == room.players.length - 1){
-					player = room.players[0];	
-					player.isTurn = true;
-				}else{
-					player = room.players[++i];	
-					player.isTurn = true;
-				}
+					if(i == room.players.length - 1){
+						player = room.players[0];	
+						player.isTurn = true;
+					}else{
+						player = room.players[++i];	
+						player.isTurn = true;
+					}
+					break;
+				} 				
 			}
 			room.progressRound(socket);	
 		}
@@ -189,13 +189,13 @@ Room.prototype.addPlayer = function(player){
 	this.players.push(player);
 };
 
-Room.prototype.startGame = function(socket,groupName){
+Room.prototype.startGame = function(socket){
 	title = 'Round Started';
 	alert = {'status':12,'isPlayStart':true};
 	dataJson = {'title':title,'alert':alert};
 
 	//socket.broadcast.to(this.room_name).emit('RoundStart',dataJson);
-	socket.to(this.room_name).emit('gameStart',dataJson);
+	io.to(this.room_name).emit('gameStart',dataJson);
 
 	for(var i=0;i<this.players.length;i++){
 		if(this.players[i].isTurn){			
